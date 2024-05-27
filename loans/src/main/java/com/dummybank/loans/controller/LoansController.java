@@ -20,10 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * @author Eazy Bytes
- */
-
 @Tag(
         name = "CRUD REST APIs for Loans in dummy bank",
         description = "CRUD REST APIs in dummy bank to CREATE, UPDATE, FETCH AND DELETE loan details"
