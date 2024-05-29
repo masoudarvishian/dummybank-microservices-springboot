@@ -84,7 +84,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>masoudarvishian/${project.artifactId}:v1</image>
+						<image>dummybank/${project.artifactId}:v1</image>
 					</to>
 				</configuration>
 			</plugin>
