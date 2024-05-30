@@ -1,0 +1,37 @@
+services:
+  accounts:
+    image: masoudarvishian/dummybank-accounts:v1
+    container_name: dummybank-accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - dummybank
+  loans:
+    image: masoudarvishian/dummybank-loans:v1
+    container_name: dummybank-loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - dummybank
+  cards:
+    image: masoudarvishian/dummybank-cards:v1
+    container_name: dummybank-cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - dummybank
+networks:
+  dummybank:
+    driver: "bridge"

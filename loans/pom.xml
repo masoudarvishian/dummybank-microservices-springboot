@@ -70,7 +70,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>dummybank/${project.artifactId}:v1</name>
+						<name>masoudarvishian/dummybank-${project.artifactId}:v1</name>
 					</image>
 					<excludes>
 						<exclude>
