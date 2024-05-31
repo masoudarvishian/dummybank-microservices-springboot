@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: "3.0 QA"
+
+accounts:
+  message: "Welcome to dummy bank accounts related local QA APIs "
+  contactDetails:
+    name: "John Doe - QA Person"
+    email: "john_qa@dummybank.com"
+  onCallSupport:
+    - (555) 555-1239
+    - (555) 523-1349
