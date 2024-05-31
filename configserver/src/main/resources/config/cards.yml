@@ -1,0 +1,11 @@
+build:
+  version: "3.0"
+
+cards:
+  message: "Welcome to dummy bank cards related local APIs "
+  contactDetails:
+    name: "John Doe - Developer"
+    email: "john@dummybank.com"
+  onCallSupport:
+    - (412) 419-3491
+    - (915) 382-1932
