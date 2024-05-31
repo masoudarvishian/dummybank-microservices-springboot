@@ -22,3 +22,8 @@ spring:
     active:
       - "prod"
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
