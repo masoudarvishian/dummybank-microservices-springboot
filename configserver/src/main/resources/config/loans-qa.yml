@@ -2,7 +2,7 @@ build:
   version: "2.0"
 
 loans:
-  message: "Welcome to dummy bank loans related QA APIs"
+  message: "Welcome to dummy bank loans related QA APIs!!!"
   contactDetails:
     name: "Christina - QA Lead"
     email: "christina@dummybank.com"

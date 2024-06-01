@@ -2,7 +2,7 @@ build:
   version: "1.0"
 
 accounts:
-  message: "Welcome to dummy bank accounts related production APIs "
+  message: "Welcome to dummy bank accounts related prod APIs "
   contactDetails:
     name: "John Doe - Product owner"
     email: "{cipher}c93ffc35508bd4951368d2003ebad0822092f18ab39fd006e319d1048abab7f3f62f14a231ff790d4b68874167c4e1c7"

@@ -2,7 +2,7 @@ build:
   version: "2.0"
 
 cards:
-  message: "Welcome to dummy bank cards related QA APIs "
+  message: "Welcome to dummy bank cards related QA APIs!!!"
   contactDetails:
     name: "Cherry - QA Lead"
     email: "cherry@dummybank.com"
