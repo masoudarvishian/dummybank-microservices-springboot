@@ -46,7 +46,7 @@ services:
 #      service: network-deploy-service
 
   configserver:
-    image: masoudarvishian/dummybank-configserver:v3
+    image: masoudarvishian/dummybank-configserver:v4
     container_name: dummybank-configserver-ms
     ports:
       - "8071:8071"
@@ -63,8 +63,25 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  eurekaserver:
+    image: masoudarvishian/dummybank-eurekaserver:v4
+    container_name: dummybank-eurekaserver-ms
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
   accounts:
-    image: masoudarvishian/dummybank-accounts:v3
+    image: masoudarvishian/dummybank-accounts:v4
     container_name: dummybank-accounts-ms
     ports:
       - "8080:8080"
@@ -76,10 +93,10 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
   loans:
-    image: masoudarvishian/dummybank-loans:v3
+    image: masoudarvishian/dummybank-loans:v4
     container_name: dummybank-loans-ms
     ports:
       - "8090:8090"
@@ -91,10 +108,10 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://loansdb:3306/loansdb"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
   cards:
-    image: masoudarvishian/dummybank-cards:v3
+    image: masoudarvishian/dummybank-cards:v4
     container_name: dummybank-cards-ms
     ports:
       - "9000:9000"
@@ -106,7 +123,7 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 networks:
   dummybank:
     driver: "bridge"
