@@ -1,9 +1,11 @@
 package com.dummybank.accounts.mapper;
 
+import com.dummybank.accounts.dto.CustomerDetailsDto;
 import com.dummybank.accounts.dto.CustomerDto;
 import com.dummybank.accounts.entity.Customer;
 
 public class CustomerMapper {
+
     public static CustomerDto mapToCustomerDto(Customer customer, CustomerDto customerDto) {
         customerDto.setName(customer.getName());
         customerDto.setEmail(customer.getEmail());
@@ -17,4 +19,12 @@ public class CustomerMapper {
         customer.setMobileNumber(customerDto.getMobileNumber());
         return customer;
     }
+
+    public static CustomerDetailsDto mapToCustomerDetailsDto(Customer customer, CustomerDetailsDto customerDetailsDto) {
+        customerDetailsDto.setName(customer.getName());
+        customerDetailsDto.setEmail(customer.getEmail());
+        customerDetailsDto.setMobileNumber(customer.getMobileNumber());
+        return customerDetailsDto;
+    }
+
 }
