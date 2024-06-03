@@ -29,30 +29,11 @@ services:
       file: common-config.yml
       service: microservice-db-config
 
-  #  rabbit:
-  #    image: rabbitmq:3.13-management
-  #    hostname: rabbitmq
-  #    ports:
-  #      - "5672:5672"
-  #      - "15672:15672"
-  #    healthcheck:
-  #      test: rabbitmq-diagnostics check_port_connectivity
-  #      interval: 10s
-  #      timeout: 5s
-  #      retries: 10
-  #      start_period: 5s
-  #    extends:
-  #      file: common-config.yml
-  #      service: network-deploy-service
-
   configserver:
-    image: masoudarvishian/dummybank-configserver:v4
+    image: masoudarvishian/dummybank-configserver:v5
     container_name: dummybank-configserver-ms
     ports:
       - "8071:8071"
-    #    depends_on:
-    #      rabbit:
-    #        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
@@ -64,7 +45,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: masoudarvishian/dummybank-eurekaserver:v4
+    image: masoudarvishian/dummybank-eurekaserver:v5
     container_name: dummybank-eurekaserver-ms
     ports:
       - "8070:8070"
@@ -81,10 +62,16 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"
 
   accounts:
-    image: masoudarvishian/dummybank-accounts:v4
+    image: masoudarvishian/dummybank-accounts:v5
     container_name: dummybank-accounts-ms
     ports:
       - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     depends_on:
       accountsdb:
         condition: service_healthy
@@ -96,10 +83,16 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: masoudarvishian/dummybank-loans:v4
+    image: masoudarvishian/dummybank-loans:v5
     container_name: dummybank-loans-ms
     ports:
       - "8090:8090"
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     depends_on:
       loansdb:
         condition: service_healthy
@@ -111,10 +104,16 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: masoudarvishian/dummybank-cards:v4
+    image: masoudarvishian/dummybank-cards:v5
     container_name: dummybank-cards-ms
     ports:
       - "9000:9000"
+    healthcheck:
+      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     depends_on:
       cardsdb:
         condition: service_healthy
@@ -124,6 +123,25 @@ services:
     extends:
       file: common-config.yml
       service: microservice-eureka-config
+
+  gatewayserver:
+    image: masoudarvishian/dummybank-gatewayserver:v5
+    container_name: dummybank-gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      accounts:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
 networks:
   dummybank:
     driver: "bridge"
