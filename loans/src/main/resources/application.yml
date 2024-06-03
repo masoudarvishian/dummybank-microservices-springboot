@@ -53,3 +53,9 @@ info:
     name: "loans"
     description: "Dummy bank loans application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      dummybank:
+        loans: DEBUG
