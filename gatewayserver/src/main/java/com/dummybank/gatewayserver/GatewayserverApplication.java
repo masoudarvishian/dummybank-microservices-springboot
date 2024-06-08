@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -20,21 +22,36 @@ public class GatewayserverApplication {
         return routeLocatorBuilder.routes()
                 .route(p -> p
                         .path("/dummybank/accounts/**")
-                        .filters(f -> f.rewritePath("/dummybank/accounts/(?<segment>.*)", "/${segment}")
+                        .filters(f -> f
+                                .rewritePath("/dummybank/accounts/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-                                .circuitBreaker(config -> config.setName("accountsCircuitBreaker")
-                                        .setFallbackUri("forward:/contactSupport")))
-                        .uri("lb://ACCOUNTS"))
+                                .circuitBreaker(config -> config
+                                        .setName("accountsCircuitBreaker")
+                                        .setFallbackUri("forward:/contactSupport")
+                                )
+                        )
+                        .uri("lb://ACCOUNTS")
+                )
                 .route(p -> p
                         .path("/dummybank/loans/**")
-                        .filters(f -> f.rewritePath("/dummybank/loans/(?<segment>.*)", "/${segment}")
-                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://LOANS"))
+                        .filters(f -> f
+                                .rewritePath("/dummybank/loans/(?<segment>.*)", "/${segment}")
+                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                                .retry(retryConfig -> retryConfig
+                                        .setRetries(3)
+                                        .setMethods(HttpMethod.GET)
+                                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true)
+                                )
+                        )
+                        .uri("lb://LOANS")
+                )
                 .route(p -> p
                         .path("/dummybank/cards/**")
-                        .filters(f -> f.rewritePath("/dummybank/cards/(?<segment>.*)", "/${segment}")
-                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://CARDS")).build();
+                        .filters(f -> f
+                                .rewritePath("/dummybank/cards/(?<segment>.*)", "/${segment}")
+                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                        )
+                        .uri("lb://CARDS")
+                ).build();
     }
-
 }
